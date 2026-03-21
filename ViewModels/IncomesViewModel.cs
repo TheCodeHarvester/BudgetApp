@@ -1,20 +1,18 @@
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using BudgetApp.Commands.PeopleViewCommands;
 using BudgetApp.Model;
 using BudgetApp.Model.Data;
+using BudgetApp.Stores;
 
 namespace BudgetApp.ViewModels;
 
 public class IncomesViewModel : ViewModelBase
 {
-    private readonly ObservableCollection<string> _people;
-    public IEnumerable<string> People => _people;
+    private readonly PersonStore _personStore;
+    public IEnumerable<Person> People => _personStore.GetPeople();
 
-    //private readonly ObservableCollection<IncomesViewModel> _incomes;
-    //public IEnumerable<IncomesViewModel> Incomes => _incomes;
+    private readonly IncomeStore _incomeStore;
+    public IEnumerable<Income> Incomes => _incomeStore.GetIncomes();
 
-    private string _place; 
+    private string _place;
     public string Place
     {
         get => _place;
@@ -38,13 +36,7 @@ public class IncomesViewModel : ViewModelBase
 
     public IncomesViewModel(FinanceSystem financeSystem)
     {
-        _people = new ObservableCollection<string>();
-    }
-
-    public void UpdatePeople(IEnumerable<Person> people)
-    {
-        _people.Clear();
-        foreach (var person in people)
-            _people.Add(person.FirstName + " " + person.LastName);
+        _personStore = financeSystem.PersonStore;
+        _incomeStore = financeSystem.IncomeStore;
     }
 }
