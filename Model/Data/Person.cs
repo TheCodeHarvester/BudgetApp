@@ -22,4 +22,9 @@ public class Person(string firstName, string lastName) : BindableBase
         FirstName = newName.FirstName;
         LastName = newName.LastName;
     }
+
+    public Person? GrabPerson(string fullName)
+    {
+        return FullName == fullName ? this : null;
+    }
 }

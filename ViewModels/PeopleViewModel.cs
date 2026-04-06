@@ -42,8 +42,8 @@ public class PeopleViewModel : ViewModelBase
 
             if (_selectedPerson != null)
             {
-                FirstName = FirstName == string.Empty ? _selectedPerson.FirstName : FirstName;
-                LastName = LastName == string.Empty ?  _selectedPerson.LastName : LastName;
+                FirstName = _selectedPerson.FirstName;
+                LastName = _selectedPerson.LastName;
                 FocusTarget = "FirstName";
             }
 

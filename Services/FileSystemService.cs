@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace BudgetApp.Services;
 
@@ -29,6 +30,12 @@ public static class FileSystemService
             return default(T);
 
         var json = await File.ReadAllTextAsync(fullPath);
-        return JsonSerializer.Deserialize<T>(json);
+        return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
+            {
+                IncludeFields = true,
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter() }
+            }
+        );
     }
 }

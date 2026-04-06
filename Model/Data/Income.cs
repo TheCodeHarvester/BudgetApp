@@ -1,50 +1,61 @@
+using System.Text.Json.Serialization;
 using BudgetApp.Model.Utility;
 
 namespace BudgetApp.Model.Data;
 
-public class Income(string name, string incomeName, double amount, DateTime date, OccurenceType category) : BindableBase
+public class Income : BindableBase
 {
-    private string _name = name;
-    public string Name
+    private string _incomeSource;
+    public string IncomeSource
     {
-        get => _name;
-        private set => SetProperty(ref _name, value, nameof(Name));
+        get => _incomeSource;
+        private set => SetProperty(ref _incomeSource, value, nameof(IncomeSource));
     }
 
-    private string _incomeName = incomeName;
-    public string IncomeName
-    {
-        get => _incomeName;
-        private set => SetProperty(ref _incomeName, value, nameof(IncomeName));
-    }
-
-    private double _amount = amount;
+    private double _amount;
     public double Amount
     {
         get => _amount;
         private set => SetProperty(ref _amount, value, nameof(Amount));
     }
 
-    private DateTime _lastOccurence = date;
-    public DateTime LastOccurence
+    private string _whosIncome;
+    public string WhosIncome
     {
-        get => _lastOccurence;
-        private set => SetProperty(ref _lastOccurence, value, nameof(LastOccurence));
+        get => _whosIncome;
+        private set => SetProperty(ref _whosIncome, value, nameof(WhosIncome));
     }
 
-    private OccurenceType _occurenceType = category;
+    private OccurenceType _occurenceType;
     public OccurenceType OccurenceType
     {
         get => _occurenceType;
         private set => SetProperty(ref _occurenceType, value, nameof(OccurenceType));
     }
 
+    private DateTime _nextOccurance;
+    public DateTime NextOccurance
+    {
+        get => _nextOccurance;
+        private set => SetProperty(ref _nextOccurance, value, nameof(NextOccurance));
+    }
+
+    [JsonConstructor]
+    public Income(string incomeSource, double amount, string whosIncome, OccurenceType occurenceType, DateTime nextOccurance)
+    {
+        _incomeSource = incomeSource;
+        _amount = amount;
+        _whosIncome = whosIncome;
+        _occurenceType = occurenceType;
+        _nextOccurance = nextOccurance;
+    }
+
     public void EditIncome(Income income)
     {
-        Name = income.Name;
-        IncomeName = income.IncomeName;
+        IncomeSource = income.IncomeSource;
+        WhosIncome = income.WhosIncome;
         Amount = income.Amount;
-        LastOccurence = income.LastOccurence;
         OccurenceType = income.OccurenceType;
+        NextOccurance = income.NextOccurance;
     }
 }

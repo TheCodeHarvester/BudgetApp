@@ -71,10 +71,10 @@ public class IncomeStore : AsyncStoreBase
 
     private Income? CheckForConflictingIncome(Income incomingPerson)
     {
-        return _incomes.FirstOrDefault(x => x.Name == incomingPerson.Name
-                                            && x.IncomeName == incomingPerson.IncomeName
+        return _incomes.FirstOrDefault(x => x.WhosIncome == incomingPerson.WhosIncome
+                                            && x.IncomeSource == incomingPerson.IncomeSource
                                             && Math.Abs(x.Amount - incomingPerson.Amount) < 0.1
-                                            && x.LastOccurence == incomingPerson.LastOccurence
+                                            && x.NextOccurance == incomingPerson.NextOccurance
                                             && x.OccurenceType == incomingPerson.OccurenceType) ?? null;
     }
 
