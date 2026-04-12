@@ -1,30 +1,43 @@
+using System.Text.Json.Serialization;
+
 namespace BudgetApp.Model.Data;
 
-public class Person(string firstName, string lastName) : BindableBase
+public class Person : BindableBase
 {
-    private string _firstName = firstName;
+    private string _firstName;
     public string FirstName
     {
         get => _firstName;
-        private set => SetProperty(ref _firstName, value, nameof(FullName));
+        set
+        {
+            SetProperty(ref _firstName, value, nameof(FullName));
+            RaisePropertyChanged(nameof(FullName));
+        }
     }
 
-    private string _lastName = lastName;
+    private string _lastName;
     public string LastName
     {
         get => _lastName;
-        private set => SetProperty(ref _lastName, value, nameof(FullName));
+        set
+        {
+            SetProperty(ref _lastName, value, nameof(FullName));
+            RaisePropertyChanged(nameof(FullName));
+        }
     }
 
     public string FullName => $"{FirstName} {LastName}";
-    public void EditName(Person newName)
+
+    public Person()
     {
-        FirstName = newName.FirstName;
-        LastName = newName.LastName;
+        FirstName = string.Empty;
+        LastName = string.Empty;
     }
 
-    public Person? GrabPerson(string fullName)
+    [JsonConstructor]
+    public Person(int id, string firstName, string lastName) : base(id)
     {
-        return FullName == fullName ? this : null;
+        FirstName = firstName;
+        LastName = lastName;
     }
 }

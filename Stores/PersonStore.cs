@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using BudgetApp.Exceptions;
 using BudgetApp.Model.Data;
 using BudgetApp.Services;
@@ -9,23 +10,20 @@ public class PersonStore : AsyncStoreBase
 {
     private const string _fileName = "People.Json";
     private ObservableCollection<Person> _people = [];
+    public ObservableCollection<Person> GetPeople() => _people;
+    public Dictionary<int, string> PeopleLookup() => _people.ToDictionary(p => p.Id, p => p.FullName);
 
     public async Task InitializeAsync()
     {
-        var loaded = await FileSystemService.LoadData<List<Person>>(_fileName);
-
-        if (loaded == null)
-            return;
+        var loaded = await FileSystemService.LoadData<ObservableCollection<Person>>(_fileName);
 
         await ExecuteAsync(() =>
         {
-            _people = new ObservableCollection<Person>(loaded);
-        });
-    }
+            if(loaded != null)
+                _people = new ObservableCollection<Person>(loaded);
 
-    public ObservableCollection<Person> GetPeople()
-    {
-        return _people;
+            HookCollection(_people);
+        });
     }
 
     public Task AddPerson(Person person)
@@ -38,7 +36,6 @@ public class PersonStore : AsyncStoreBase
                 throw new PersonException(conflictingPerson, person);
 
             _people.Add(person);
-            ScheduleSave(_people, _fileName);
         });
     }
 
@@ -52,30 +49,22 @@ public class PersonStore : AsyncStoreBase
                 throw new PersonException(person, person);
 
             _people.Remove(personToRemove);
-            ScheduleSave(_people, _fileName);
-        });
-    }
-
-    public Task UpdatePerson(Person existingPerson, Person incomingPerson)
-    {
-        return ExecuteAsync(() => {
-            var personToEdit = CheckForConflictingPerson(existingPerson);
-
-            if (personToEdit == null)
-               throw new PersonException(existingPerson, incomingPerson);
-
-            personToEdit.EditName(incomingPerson);
-            ScheduleSave(_people, _fileName);
         });
     }
 
     private Person? CheckForConflictingPerson(Person incomingPerson)
     {
-        return _people.FirstOrDefault(x => x.FirstName == incomingPerson.FirstName && x.LastName == incomingPerson.LastName) ?? null;
+        return _people.FirstOrDefault(x => x.Id == incomingPerson.Id) ?? null;
     }
 
     public async Task SaveStore()
     {
         await Save(_people, _fileName);
+        UnhookAllCollections();
+    }
+
+    protected override void OnItemPropertyChanged(object? sender, PropertyChangedEventArgs? e)
+    {
+        ScheduleSave(_people, _fileName);
     }
 }

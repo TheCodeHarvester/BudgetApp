@@ -31,7 +31,7 @@ public partial class App : Application
         MainWindow = new MainWindow()
         {
             DataContext = new MainViewModel(new NavigationService(_navigationStore, CreatePersonViewModel), 
-                new NavigationService(_navigationStore, CreateAccountsViewModel),
+                new NavigationService(_navigationStore, CreateCreditCardAccountsViewModel),
                 new NavigationService(_navigationStore, CreateIncomesViewModel), 
                 _navigationStore)
         };
@@ -49,9 +49,9 @@ public partial class App : Application
         return new IncomesViewModel(_financeSystem);
     }
 
-    private AccountsViewModel CreateAccountsViewModel()
+    private CreditCardsAccountsViewModel CreateCreditCardAccountsViewModel()
     {
-        return new AccountsViewModel();
+        return new CreditCardsAccountsViewModel(_financeSystem);
     }
 
     protected override async void OnExit(ExitEventArgs e)

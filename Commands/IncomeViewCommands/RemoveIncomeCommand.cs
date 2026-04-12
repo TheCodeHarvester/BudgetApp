@@ -30,8 +30,8 @@ public class RemoveIncomeCommand : AsyncCommandBase
     {
         try
         {
-            await _incomeStore.RemoveIncome(_viewModel.SelectedIncome);
-            _viewModel.ResetIncomeInfo();
+            await _incomeStore.RemoveIncome(_viewModel.SelectedIncome.Account);
+            _viewModel.LoadIncomes();
         }
         catch (IncomeException ex)
         {

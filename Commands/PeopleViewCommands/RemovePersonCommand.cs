@@ -31,8 +31,6 @@ public class RemovePersonCommand : AsyncCommandBase
         try
         {
             await _personStore.RemovePerson(_viewModel.SelectedPerson);
-            _viewModel.FirstName = string.Empty;
-            _viewModel.LastName = string.Empty;
         }
         catch (PersonException ex)
         {

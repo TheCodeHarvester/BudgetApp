@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BudgetApp"
         xmlns:views="clr-namespace:BudgetApp.Views"
         xmlns:vms="clr-namespace:BudgetApp.ViewModels"
         Title="Budget Self" 
@@ -16,8 +15,8 @@
             <DataTemplate DataType="{x:Type vms:PeopleViewModel}">
                 <views:PeopleView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type vms:AccountsViewModel}">
-                <views:AccountsView/>
+            <DataTemplate DataType="{x:Type vms:CreditCardsAccountsViewModel}">
+                <views:CreditCardsAccountsView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type vms:IncomesViewModel}">
                 <views:IncomesView/>

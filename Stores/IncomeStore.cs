@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using BudgetApp.Exceptions;
 using BudgetApp.Model.Data;
 using BudgetApp.Services;
@@ -9,23 +10,23 @@ public class IncomeStore : AsyncStoreBase
 {
     private const string _fileName = "Incomes.Json";
     private ObservableCollection<Income> _incomes = [];
-    
-    public async Task InitializeAsync()
-    {
-        var loaded = await FileSystemService.LoadData<List<Income>>(_fileName);
-
-        if (loaded == null)
-            return;
-
-        await ExecuteAsync(() =>
-        {
-            _incomes = new ObservableCollection<Income>(loaded);
-        });
-    }
 
     public ObservableCollection<Income> GetIncomes()
     {
         return _incomes;
+    }
+
+    public async Task InitializeAsync()
+    {
+        var loaded = await FileSystemService.LoadData<ObservableCollection<Income>>(_fileName);
+
+        await ExecuteAsync(() =>
+        {
+            if(loaded != null)
+                _incomes = new ObservableCollection<Income>(loaded);
+
+            HookCollection(_incomes);
+        });
     }
 
     public Task AddIncome(Income income)
@@ -38,7 +39,6 @@ public class IncomeStore : AsyncStoreBase
                 throw new IncomeException(conflictingIncome, income);
 
             _incomes.Add(income);
-            ScheduleSave(_incomes, _fileName);
         });
     }
 
@@ -52,34 +52,22 @@ public class IncomeStore : AsyncStoreBase
                 throw new IncomeException(income, income);
 
             _incomes.Remove(incomeToRemove);
-            ScheduleSave(_incomes, _fileName);
-        });
-    }
-
-    public Task UpdateIncome(Income existingIncome, Income incomingIncome)
-    {
-        return ExecuteAsync(() => {
-            var personToEdit = CheckForConflictingIncome(existingIncome);
-
-            if (personToEdit == null)
-                throw new IncomeException(existingIncome, incomingIncome);
-
-            personToEdit.EditIncome(incomingIncome);
-            ScheduleSave(_incomes, _fileName);
         });
     }
 
     private Income? CheckForConflictingIncome(Income incomingPerson)
     {
-        return _incomes.FirstOrDefault(x => x.WhosIncome == incomingPerson.WhosIncome
-                                            && x.IncomeSource == incomingPerson.IncomeSource
-                                            && Math.Abs(x.Amount - incomingPerson.Amount) < 0.1
-                                            && x.NextOccurance == incomingPerson.NextOccurance
-                                            && x.OccurenceType == incomingPerson.OccurenceType) ?? null;
+        return _incomes.FirstOrDefault(x => x.Id == incomingPerson.Id) ?? null;
     }
 
     public async Task SaveStore()
     {
         await Save(_incomes, _fileName);
+        UnhookAllCollections();
+    }
+
+    protected override void OnItemPropertyChanged(object? sender, PropertyChangedEventArgs? e)
+    {
+        ScheduleSave(_incomes, _fileName);
     }
 }

@@ -1,12 +1,66 @@
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using BudgetApp.Services;
 
 namespace BudgetApp.Stores;
 
-public class AsyncStoreBase
+public class AsyncStoreBase : IDisposable
 {
-    private readonly SemaphoreSlim _semaphore = new(1, 1);
+    private bool _isDisposed;
     private CancellationTokenSource? _saveCts;
-    private readonly TimeSpan _saveDelay = TimeSpan.FromSeconds(1);
+    private readonly SemaphoreSlim _semaphore = new(1, 1);
+    private readonly TimeSpan _saveDelay = TimeSpan.FromMilliseconds(300);
+    private readonly List<(INotifyCollectionChanged collection, NotifyCollectionChangedEventHandler handler)> _trackedCollections = [];
+
+    protected virtual void OnItemPropertyChanged(object? sender, PropertyChangedEventArgs? e) { }
+
+    protected void HookItemPropertyChanged<T>(T item) where T : INotifyPropertyChanged
+    {
+        item.PropertyChanged += OnItemPropertyChanged;
+    }
+
+    protected void UnhookItemPropertyChanged<T>(T item) where T : INotifyPropertyChanged
+    {
+        item.PropertyChanged -= OnItemPropertyChanged;
+    }
+
+    protected void HookCollection<T>(ObservableCollection<T> collection) where T : INotifyPropertyChanged
+    {
+        foreach (var item in collection)
+            item.PropertyChanged += OnItemPropertyChanged;
+
+        NotifyCollectionChangedEventHandler handler = (s, e) =>
+        {
+            if (e.NewItems != null)
+            {
+                foreach (T item in e.NewItems)
+                    item.PropertyChanged += OnItemPropertyChanged;
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (T item in e.OldItems)
+                    item.PropertyChanged -= OnItemPropertyChanged;
+            }
+
+            OnItemPropertyChanged(null, null);
+        };
+
+        collection.CollectionChanged += handler;
+
+        _trackedCollections.Add((collection, handler));
+    }
+    
+    protected void UnhookAllCollections()
+    {
+        foreach (var (collection, handler) in _trackedCollections)
+        {
+            collection.CollectionChanged -= handler;
+        }
+
+        _trackedCollections.Clear();
+    }
 
     protected async Task ExecuteAsync(Action action)
     {
@@ -14,32 +68,6 @@ public class AsyncStoreBase
         try
         {
             action();
-        }
-        finally
-        {
-            _semaphore.Release();
-        }
-    }
-
-    protected async Task<T> ExecuteAsync<T>(Func<T> func)
-    {
-        await _semaphore.WaitAsync();
-        try
-        {
-            return func();
-        }
-        finally
-        {
-            _semaphore.Release();
-        }
-    }
-
-    protected async Task ExecuteAsync(Func<Task> func)
-    {
-        await _semaphore.WaitAsync();
-        try
-        {
-            await func();
         }
         finally
         {
@@ -71,5 +99,16 @@ public class AsyncStoreBase
     protected static async Task Save<T>(T data, string _fileName)
     {
         await FileSystemService.SaveData(data, _fileName);
+    }
+
+    public void Dispose()
+    {
+        if (_isDisposed)
+            return;
+
+        UnhookAllCollections();
+
+        _isDisposed = true;
+        GC.SuppressFinalize(this);
     }
 }

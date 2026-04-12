@@ -1,3 +1,21 @@
+using System.Text.Json.Serialization;
+
 namespace BudgetApp.Model.Data.NoteScripts;
 
-public abstract class Note { }
+public class Note : BindableBase
+{
+    private string _description = string.Empty;
+    public string Description
+    {
+        get => _description;
+        private set => SetProperty(ref _description, value, nameof(Description));
+    }
+
+    public Note(){ }
+
+    [JsonConstructor]
+    public Note(string description)
+    {
+        _description = description;
+    }
+}
