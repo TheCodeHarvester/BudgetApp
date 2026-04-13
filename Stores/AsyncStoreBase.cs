@@ -11,7 +11,7 @@ public class AsyncStoreBase : IDisposable
     private CancellationTokenSource? _saveCts;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
     private readonly TimeSpan _saveDelay = TimeSpan.FromMilliseconds(300);
-    private readonly List<(INotifyCollectionChanged collection, NotifyCollectionChangedEventHandler handler)> _trackedCollections = [];
+    private readonly Dictionary<INotifyCollectionChanged, NotifyCollectionChangedEventHandler> _trackedCollections = [];
 
     protected virtual void OnItemPropertyChanged(object? sender, PropertyChangedEventArgs? e) { }
 
@@ -30,7 +30,27 @@ public class AsyncStoreBase : IDisposable
         foreach (var item in collection)
             item.PropertyChanged += OnItemPropertyChanged;
 
-        NotifyCollectionChangedEventHandler handler = (s, e) =>
+        var handler = CollectionChangedHandler<T>();
+
+        collection.CollectionChanged += handler;
+
+        _trackedCollections.Add(collection, handler);
+    }
+
+    protected void UnhookCollection<T>(ObservableCollection<T> collection) where T : INotifyPropertyChanged
+    {
+        foreach (var item in collection)
+            item.PropertyChanged -= OnItemPropertyChanged;
+
+        if (!_trackedCollections.TryGetValue(collection, out var handler)) return;
+
+        collection.CollectionChanged -= handler;
+        _trackedCollections.Remove(collection);
+    }
+
+    private NotifyCollectionChangedEventHandler CollectionChangedHandler<T>() where T : INotifyPropertyChanged
+    {
+        return (s, e) =>
         {
             if (e.NewItems != null)
             {
@@ -46,12 +66,8 @@ public class AsyncStoreBase : IDisposable
 
             OnItemPropertyChanged(null, null);
         };
-
-        collection.CollectionChanged += handler;
-
-        _trackedCollections.Add((collection, handler));
     }
-    
+
     protected void UnhookAllCollections()
     {
         foreach (var (collection, handler) in _trackedCollections)

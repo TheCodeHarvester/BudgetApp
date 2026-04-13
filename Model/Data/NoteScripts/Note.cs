@@ -8,7 +8,7 @@ public class Note : BindableBase
     public string Description
     {
         get => _description;
-        private set => SetProperty(ref _description, value, nameof(Description));
+        set => SetProperty(ref _description, value, nameof(Description));
     }
 
     public Note(){ }
@@ -16,6 +16,6 @@ public class Note : BindableBase
     [JsonConstructor]
     public Note(string description)
     {
-        _description = description;
+        Description = description;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using BudgetApp.Model.Data.NoteScripts;
 
@@ -5,11 +6,11 @@ namespace BudgetApp.Model.Data.Accounts;
 
 public class CreditCardAccount : FinancialAccount
 {
-    private string _accountDetailsFile = string.Empty;
+    private readonly string _accountDetailsFile = string.Empty;
     public string AccountDetailsFile
     {
         get => _accountDetailsFile;
-        set => SetProperty(ref _accountDetailsFile, value, nameof(AccountDetailsFile));
+        init => SetProperty(ref _accountDetailsFile, value, nameof(AccountDetailsFile));
     }
 
     private DateTime _expirationDate = DateTime.Today;
@@ -43,11 +44,11 @@ public class CreditCardAccount : FinancialAccount
 
     public double Available => CreditLine - Balance;
 
-    private List<Interest> _interests = [];
-    public List<Interest> Interests
+    private readonly ObservableCollection<Interest> _interests = [];
+    public ObservableCollection<Interest> Interests
     {
         get => _interests;
-        set => SetProperty(ref _interests, value, nameof(Interests));
+        init => SetProperty(ref _interests, value, nameof(Interests));
     }
 
     private double _minimumDue = 0.0;
@@ -68,25 +69,25 @@ public class CreditCardAccount : FinancialAccount
 
     public CreditCardAccount(string accountFile, string loginFile)
     {
-        _loginDetailsFile = loginFile;
-        _accountDetailsFile = accountFile;
+        LoginDetailsFile = loginFile;
+        AccountDetailsFile = accountFile;
     }
 
     [JsonConstructor]
     public CreditCardAccount(string accountDetailsFile, DateTime expirationDate, double creditLine, double balance,
-        List<Interest> interests, double minimumDue, string cycleDay, int ownerId, string accountName, 
-        string loginDetailsFile, List<Note> notes)
+        ObservableCollection<Interest> interests, double minimumDue, string cycleDay, int ownerId, string accountName, 
+        string loginDetailsFile, ObservableCollection<Note> notes)
     {
-        _loginDetailsFile = loginDetailsFile;
-        _notes = notes;
-        _accountDetailsFile = accountDetailsFile;
-        _expirationDate = expirationDate;
-        _creditLine = creditLine;
-        _balance = balance;
-        _interests = interests;
-        _minimumDue = minimumDue;
-        _cycleDay = cycleDay;
-        _ownerId = ownerId;
-        _accountName = accountName;
+        LoginDetailsFile = loginDetailsFile;
+        Notes = notes;
+        AccountDetailsFile = accountDetailsFile;
+        ExpirationDate = expirationDate;
+        CreditLine = creditLine;
+        Balance = balance;
+        Interests = interests;
+        MinimumDue = minimumDue;
+        CycleDay = cycleDay;
+        OwnerId = ownerId;
+        AccountName = accountName;
     }
 }

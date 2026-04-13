@@ -12,18 +12,17 @@ public class MainViewModel : ViewModelBase
     public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
     public ICommand NavigateToPeopleView { get; }
     public ICommand NavigateToIncomesView { get; }
-    public ICommand NavigateToAccountsView { get; }
+    public ICommand NavigateToCreditCardsView { get; }
+    public ICommand NavigateToLoansView { get; }
 
-    public MainViewModel(NavigationService CreatePersonViewModel, 
-        NavigationService CreateAccountViewModel,
-        NavigationService CreateIncomesViewModel, 
-        NavigationStore navigationStore)
+    public MainViewModel(List<NavigationService> navigationServices, NavigationStore navigationStore)
     {
         _navigationStore = navigationStore;
 
-        NavigateToPeopleView = new NavigateCommand(CreatePersonViewModel);
-        NavigateToAccountsView = new NavigateCommand(CreateAccountViewModel);
-        NavigateToIncomesView = new NavigateCommand(CreateIncomesViewModel);
+        NavigateToPeopleView = new NavigateCommand(navigationServices[0]);
+        NavigateToIncomesView = new NavigateCommand(navigationServices[1]);
+        NavigateToCreditCardsView = new NavigateCommand(navigationServices[2]);
+        NavigateToLoansView = new NavigateCommand(navigationServices[3]);
 
         _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
     }

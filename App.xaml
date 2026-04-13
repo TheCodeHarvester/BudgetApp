@@ -1,11 +1,38 @@
 ﻿<Application x:Class="BudgetApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:utility="clr-namespace:BudgetApp.Model.Utility">
+             xmlns:utility="clr-namespace:BudgetApp.Model.Utility"
+             xmlns:behaviors="clr-namespace:BudgetApp.Behaviors">
     <Application.Resources>
+        <!--#region Converters -->
         <!-- Utility Resources -->
         <utility:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
 
+        <!--#endregion -->
+
+        <!--#region Behaviors -->
+        <!-- Textbox Behaviors -->
+        <Style TargetType="TextBox" x:Key="LoseFocusOnEnter">
+            <Setter Property="behaviors:TextBoxBehavior.LoseFocusOnEnter" Value="True"/>
+            <Setter Property="behaviors:TextBoxBehavior.SelectAllOnFocus" Value="True"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="behaviors:TextBoxBehavior.SelectAllOnFocus" Value="True"/>
+        </Style>
+
+        <!-- Date Picker Behaviors -->
+        <Style TargetType="DatePicker">
+            <Setter Property="behaviors:DatePickerBehavior.SelectAllOnFocus" Value="True"/>
+        </Style>
+
+        <!-- Data Grid Behaviors -->
+        <Style TargetType="DataGrid" x:Key="SingleClickEditDataCell">
+            <Setter Property="behaviors:DataGridBehavior.SingleClickEdit" Value="True"/>
+        </Style>
+        <!--#endregion -->
+
+        <!--#region Templates -->
         <!-- Plus Button Template -->
         <DataTemplate x:Key="PlusButtonContentTemplate">
             <TextBlock 
@@ -25,7 +52,9 @@
                 Margin="-8 -10 -8 -3"
                 Width="30"/>
         </DataTemplate>
-        
+        <!--#endregion -->
+
+        <!--#region Stylings -->
         <!-- Group Box Style -->
         <Style TargetType="GroupBox">
             <Setter Property="BorderBrush" Value="Gray"/>
@@ -42,5 +71,7 @@
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="Margin" Value="5 0"/>
         </Style>
+        <!--#endregion -->
+
     </Application.Resources>
 </Application>

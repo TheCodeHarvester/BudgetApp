@@ -2,9 +2,9 @@ using System.Windows.Controls;
 
 namespace BudgetApp.Views;
 
-public partial class CreditCardsAccountsView : UserControl
+public partial class LoansView : UserControl
 {
-    public CreditCardsAccountsView()
+    public LoansView()
     {
         InitializeComponent();
     }

@@ -3,6 +3,7 @@ using BudgetApp.Model;
 using BudgetApp.Services;
 using BudgetApp.Stores;
 using BudgetApp.ViewModels;
+using BudgetApp.ViewModels.UserControls;
 
 namespace BudgetApp;
 
@@ -11,14 +12,8 @@ namespace BudgetApp;
 /// </summary>
 public partial class App : Application
 {
-    private FinanceSystem _financeSystem;
-    private NavigationStore _navigationStore;
-
-    public App()
-    {
-        _financeSystem = new FinanceSystem();
-        _navigationStore = new NavigationStore();
-    }
+    private readonly FinanceSystem _financeSystem = new();
+    private readonly NavigationStore _navigationStore = new();
 
     protected override async void OnStartup(StartupEventArgs e)
     {
@@ -28,12 +23,17 @@ public partial class App : Application
 
         _navigationStore.CurrentViewModel = CreatePersonViewModel();
 
+        var navigationServices = new List<NavigationService>
+        {
+            new(_navigationStore, CreatePersonViewModel),
+            new(_navigationStore, CreateIncomesViewModel),
+            new(_navigationStore, CreateCreditCardsViewModel),
+            new(_navigationStore, CreateLoansViewModel)
+        };
+
         MainWindow = new MainWindow()
         {
-            DataContext = new MainViewModel(new NavigationService(_navigationStore, CreatePersonViewModel), 
-                new NavigationService(_navigationStore, CreateCreditCardAccountsViewModel),
-                new NavigationService(_navigationStore, CreateIncomesViewModel), 
-                _navigationStore)
+            DataContext = new MainViewModel(navigationServices, _navigationStore)
         };
 
         MainWindow.Show();
@@ -49,9 +49,14 @@ public partial class App : Application
         return new IncomesViewModel(_financeSystem);
     }
 
-    private CreditCardsAccountsViewModel CreateCreditCardAccountsViewModel()
+    private CreditCardsViewModel CreateCreditCardsViewModel()
     {
-        return new CreditCardsAccountsViewModel(_financeSystem);
+        return new CreditCardsViewModel(_financeSystem);
+    }
+
+    private LoansViewModel CreateLoansViewModel()
+    {
+        return new LoansViewModel();
     }
 
     protected override async void OnExit(ExitEventArgs e)

@@ -6,6 +6,7 @@ using BudgetApp.Model.Data;
 using BudgetApp.Model.Utility;
 using BudgetApp.Stores;
 using BudgetApp.ViewModels;
+using BudgetApp.ViewModels.UserControls;
 
 namespace BudgetApp.Commands.IncomeViewCommands;
 

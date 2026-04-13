@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:BudgetApp.Views"
-        xmlns:vms="clr-namespace:BudgetApp.ViewModels"
+        xmlns:userControls="clr-namespace:BudgetApp.ViewModels.UserControls"
         Title="Budget Self" 
         Height="920"
         Width="1440"
@@ -12,14 +12,17 @@
         mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <DataTemplate DataType="{x:Type vms:PeopleViewModel}">
+            <DataTemplate DataType="{x:Type userControls:PeopleViewModel}">
                 <views:PeopleView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type vms:CreditCardsAccountsViewModel}">
-                <views:CreditCardsAccountsView/>
+            <DataTemplate DataType="{x:Type userControls:CreditCardsViewModel}">
+                <views:CreditCardsView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type vms:IncomesViewModel}">
+            <DataTemplate DataType="{x:Type userControls:IncomesViewModel}">
                 <views:IncomesView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type userControls:LoansViewModel}">
+                <views:LoansView/>
             </DataTemplate>
         </Grid.Resources>
 
@@ -54,8 +57,8 @@
                     Content="Incomes"/>
                 <Button
                     Margin="0 20 0 0"
-                    Command="{Binding NavigateToAccountsView}"
-                    Content="Accounts"/>
+                    Command="{Binding NavigateToCreditCardsView}"
+                    Content="Credit Cards"/>
             </StackPanel>
 
             <ContentControl 

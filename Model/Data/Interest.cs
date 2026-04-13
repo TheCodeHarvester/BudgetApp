@@ -8,20 +8,20 @@ public class Interest : BindableBase
     public string Name
     {
         get => _name;
-        private set => SetProperty(ref _name, value, nameof(Name));
+        set => SetProperty(ref _name, value, nameof(Name));
     }
 
-    private double _percentage = 0.0;
-    public double Percentage
+    private float _percentage = 0.0f;
+    public float Percentage
     {
         get => _percentage;
-        private set => SetProperty(ref _percentage, value, nameof(Percentage));
+        set => SetProperty(ref _percentage, value, nameof(Percentage));
     }
 
     public Interest(){}
 
     [JsonConstructor]
-    public Interest(string name, double percentage)
+    public Interest(string name, float percentage)
     {
         _name = name;
         _percentage = percentage;

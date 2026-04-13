@@ -3,7 +3,7 @@ using BudgetApp.Commands.PeopleViewCommands;
 using BudgetApp.Model.Data;
 using BudgetApp.Stores;
 
-namespace BudgetApp.ViewModels;
+namespace BudgetApp.ViewModels.UserControls;
 
 public class PeopleViewModel : ViewModelBase
 {

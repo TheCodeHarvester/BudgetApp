@@ -1,8 +1,8 @@
 using BudgetApp.Model.Data.Accounts;
 
-namespace BudgetApp.ViewModels;
+namespace BudgetApp.ViewModels.Rows;
 
-public class CreditCardAccountRowViewModel : ViewModelBase
+public class CreditCardRowViewModel : ViewModelBase
 {
     private readonly Dictionary<int, string> _peopleDictionary;
 
@@ -40,7 +40,7 @@ public class CreditCardAccountRowViewModel : ViewModelBase
 
     public string OwnerName => _peopleDictionary[OwnerId];
 
-    public CreditCardAccountRowViewModel(CreditCardAccount account, Dictionary<int, string> peopleDictionary)
+    public CreditCardRowViewModel(CreditCardAccount account, Dictionary<int, string> peopleDictionary)
     {
         Account = account;
         _peopleDictionary = peopleDictionary;

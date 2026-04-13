@@ -1,6 +1,6 @@
 using BudgetApp.Model.Data;
 
-namespace BudgetApp.ViewModels;
+namespace BudgetApp.ViewModels.Rows;
 
 public class IncomeRowViewModel : ViewModelBase
 {

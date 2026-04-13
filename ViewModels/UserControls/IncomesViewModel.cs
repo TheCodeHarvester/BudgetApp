@@ -5,8 +5,9 @@ using BudgetApp.Model;
 using BudgetApp.Model.Data;
 using BudgetApp.Model.Utility;
 using BudgetApp.Stores;
+using BudgetApp.ViewModels.Rows;
 
-namespace BudgetApp.ViewModels;
+namespace BudgetApp.ViewModels.UserControls;
 
 public class IncomesViewModel : ViewModelBase
 {

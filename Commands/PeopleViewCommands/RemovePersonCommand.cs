@@ -4,6 +4,7 @@ using BudgetApp.Commands.Base;
 using BudgetApp.Exceptions;
 using BudgetApp.Stores;
 using BudgetApp.ViewModels;
+using BudgetApp.ViewModels.UserControls;
 
 namespace BudgetApp.Commands.PeopleViewCommands;
 
