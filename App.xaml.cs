@@ -1,9 +1,9 @@
 ﻿using System.Windows;
-using BudgetApp.Model;
-using BudgetApp.Services;
-using BudgetApp.Stores;
+using BudgetApp.Core.Services;
+using BudgetApp.Core.Stores;
+using BudgetApp.Core.ViewModels;
+using BudgetApp.Features.Accounts.Stores;
 using BudgetApp.ViewModels;
-using BudgetApp.ViewModels.UserControls;
 
 namespace BudgetApp;
 
@@ -12,56 +12,26 @@ namespace BudgetApp;
 /// </summary>
 public partial class App : Application
 {
-    private readonly FinanceSystem _financeSystem = new();
-    private readonly NavigationStore _navigationStore = new();
+    private readonly FinanceStore _financeStore = new();
 
     protected override async void OnStartup(StartupEventArgs e)
     {
+        AppContext.SetSwitch("Switch.System.Windows.Controls.Text.UseAdornerForTextboxSelectionRendering", false);
         base.OnStartup(e);
 
-        await _financeSystem.InitializeAsync();
-
-        _navigationStore.CurrentViewModel = CreatePersonViewModel();
-
-        var navigationServices = new List<NavigationService>
-        {
-            new(_navigationStore, CreatePersonViewModel),
-            new(_navigationStore, CreateIncomesViewModel),
-            new(_navigationStore, CreateCreditCardsViewModel),
-            new(_navigationStore, CreateLoansViewModel)
-        };
+        await _financeStore.InitializeAsync();
 
         MainWindow = new MainWindow()
         {
-            DataContext = new MainViewModel(navigationServices, _navigationStore)
+            DataContext = new MainViewModel(_financeStore)
         };
 
         MainWindow.Show();
     }
 
-    private PeopleViewModel CreatePersonViewModel()
-    {
-        return new PeopleViewModel(_financeSystem.PersonStore);
-    }
-
-    private IncomesViewModel CreateIncomesViewModel()
-    {
-        return new IncomesViewModel(_financeSystem);
-    }
-
-    private CreditCardsViewModel CreateCreditCardsViewModel()
-    {
-        return new CreditCardsViewModel(_financeSystem);
-    }
-
-    private LoansViewModel CreateLoansViewModel()
-    {
-        return new LoansViewModel();
-    }
-
     protected override async void OnExit(ExitEventArgs e)
     {
-        await _financeSystem.Save();
+        await _financeStore.Save();
         base.OnExit(e);
     }
 }

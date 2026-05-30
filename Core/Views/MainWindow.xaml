@@ -1,0 +1,111 @@
+﻿<Window x:Class="BudgetApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:core="clr-namespace:BudgetApp.Core.Views"
+        xmlns:coreModels="clr-namespace:BudgetApp.Core.ViewModels"
+        xmlns:views="clr-namespace:BudgetApp.Views"
+        xmlns:viewModels="clr-namespace:BudgetApp.ViewModels"
+        Title="Self Budget"
+        Height="920"
+        Width="1440"
+        FontSize="16"
+        mc:Ignorable="d">
+    <DockPanel>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <DataTemplate DataType="{x:Type coreModels:SettingsViewModel}">
+                    <core:SettingsView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:PeopleViewModel}">
+                    <views:PeopleView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:CreditCardsViewModel}">
+                    <views:CreditCardsView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:IncomesViewModel}">
+                    <views:IncomesView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:LoansViewModel}">
+                    <views:LoansView/>
+                </DataTemplate>
+            </Grid.Resources>
+    
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title Bar -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Text="Self Budget"
+                    FontSize="36"
+                    FontWeight="ExtraBold"
+                    TextAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="{DynamicResource TextBrush}"/>
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding NavigateToSettingsView}"
+                    Style="{DynamicResource SettingsButton}"/>
+            </Grid>
+    
+            <!-- Window Navigation Buttons -->
+            <DockPanel
+                Grid.Row="1"
+                Margin="0 10 0 0"
+                Style="{DynamicResource UserControlWrapper}">
+                <Border
+                    BorderThickness="0 0.5"
+                    Background="{DynamicResource SecondaryBrushOpacity20}"
+                    BorderBrush="{DynamicResource BorderBrush}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            Grid.Column="1"
+                            Content="People"
+                            IsEnabled="{Binding PeopleViewNotActive}"
+                            Command="{Binding NavigateToPeopleView}"
+                            Style="{DynamicResource NavigationButton}"/>
+                        <Button
+                            Grid.Column="2"
+                            Content="Incomes"
+                            IsEnabled="{Binding IncomesViewNotActive}"
+                            Command="{Binding NavigateToIncomesView}"
+                            Style="{DynamicResource NavigationButton}"/>
+                        <Button
+                            Grid.Column="3"
+                            Content="Credit Cards"
+                            IsEnabled="{Binding CreditCardsViewNotActive}"
+                            Command="{Binding NavigateToCreditCardsView}"
+                            Style="{DynamicResource NavigationButton}"/>
+                    </Grid>
+                </Border>
+            </DockPanel>
+
+            <!-- Main Display Grid -->
+            <DockPanel
+                Grid.Row="2"
+                Style="{DynamicResource UserControlWrapper}">
+                <ContentControl
+                    Margin="20 20 20 0"
+                    Content="{Binding CurrentViewModel}"/>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>

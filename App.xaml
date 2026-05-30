@@ -1,77 +1,33 @@
 ﻿<Application x:Class="BudgetApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:utility="clr-namespace:BudgetApp.Model.Utility"
-             xmlns:behaviors="clr-namespace:BudgetApp.Behaviors">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
-        <!--#region Converters -->
-        <!-- Utility Resources -->
-        <utility:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Theme Colors -->
+                <ResourceDictionary Source="Resources/Themes/DarkTheme.xaml"/>
 
-        <!--#endregion -->
+                <!-- Converters -->
+                <ResourceDictionary Source="Resources/Converters.xaml"/>
 
-        <!--#region Behaviors -->
-        <!-- Textbox Behaviors -->
-        <Style TargetType="TextBox" x:Key="LoseFocusOnEnter">
-            <Setter Property="behaviors:TextBoxBehavior.LoseFocusOnEnter" Value="True"/>
-            <Setter Property="behaviors:TextBoxBehavior.SelectAllOnFocus" Value="True"/>
-        </Style>
+                <!-- Styles -->
+                <ResourceDictionary Source="Resources/Styles/GridStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/DataGridStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/TextBoxStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/TextBlockStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/DockPanelStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/GroupBoxStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ComboBoxStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/LabelStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ScrollBarStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/CalendarStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/DatePickerStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/AddRemoveControlStyles.xaml"/>
 
-        <Style TargetType="TextBox">
-            <Setter Property="behaviors:TextBoxBehavior.SelectAllOnFocus" Value="True"/>
-        </Style>
-
-        <!-- Date Picker Behaviors -->
-        <Style TargetType="DatePicker">
-            <Setter Property="behaviors:DatePickerBehavior.SelectAllOnFocus" Value="True"/>
-        </Style>
-
-        <!-- Data Grid Behaviors -->
-        <Style TargetType="DataGrid" x:Key="SingleClickEditDataCell">
-            <Setter Property="behaviors:DataGridBehavior.SingleClickEdit" Value="True"/>
-        </Style>
-        <!--#endregion -->
-
-        <!--#region Templates -->
-        <!-- Plus Button Template -->
-        <DataTemplate x:Key="PlusButtonContentTemplate">
-            <TextBlock 
-                TextAlignment="Center"
-                Text="+"
-                FontSize="20"
-                Margin="-8 -10 -8 -3"
-                Width="30"/>
-        </DataTemplate>
-
-        <!-- Minus Button Template -->
-        <DataTemplate x:Key="MinusButtonContentTemplate">
-            <TextBlock 
-                TextAlignment="Center"
-                Text="-"
-                FontSize="20"
-                Margin="-8 -10 -8 -3"
-                Width="30"/>
-        </DataTemplate>
-        <!--#endregion -->
-
-        <!--#region Stylings -->
-        <!-- Group Box Style -->
-        <Style TargetType="GroupBox">
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="10 10 10 5"/>
-        </Style>
-
-        <!-- Data Table Styling -->
-        <Style TargetType="DataGridColumnHeader">
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        </Style>
-        <Style TargetType="TextBlock" x:Key="CenteredDataGridCell">
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="5 0"/>
-        </Style>
-        <!--#endregion -->
-
+                <!-- Behaviors -->
+                <ResourceDictionary Source="Resources/Behaviors/DataGridBehaviors.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

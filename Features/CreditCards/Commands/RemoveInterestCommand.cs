@@ -1,0 +1,50 @@
+using System.ComponentModel;
+using System.Windows;
+using BudgetApp.Core.Commands;
+using BudgetApp.Features.CreditCards.Stores;
+using BudgetApp.ViewModels;
+
+namespace BudgetApp.Features.CreditCards.Commands;
+
+public class RemoveInterestCommand : AsyncCommandBase
+{
+    private readonly CreditCardsStore _creditStore;
+    private readonly CreditCardsViewModel _viewModel;
+
+    public RemoveInterestCommand(CreditCardsViewModel viewModel, CreditCardsStore creditStore)
+    {
+        _viewModel = viewModel;
+        _creditStore = creditStore;
+        
+        _viewModel.PropertyChanged += ViewModelOnPropertyChanged;
+    }
+
+    private void ViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(CreditCardsViewModel.SelectedCreditCard)
+            or nameof(CreditCardsViewModel.SelectedInterest))
+        {
+            OnCanExecuteChanged();
+        }
+    }
+
+    public override bool CanExecute(object? parameter)
+    {
+        return _viewModel.SelectedCreditCard != null 
+               && _viewModel.SelectedInterest != null
+               && base.CanExecute(parameter);
+    }
+
+    public override async Task ExecuteAsync(object? parameter)
+    {
+        try
+        {
+            await _creditStore.RemoveInterest(_viewModel.SelectedCreditCard.Account, _viewModel.SelectedInterest);
+        }
+        catch (Exception)
+        {
+            MessageBox.Show($"Failed to remove interest from credit card", "Error", 
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+}

@@ -1,0 +1,46 @@
+<UserControl x:Class="BudgetApp.Core.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Background="{DynamicResource PrimaryBrush}">
+    <DockPanel Style="{DynamicResource UserControlWrapper}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        
+            <!-- Selected Person Section -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <GroupBox
+                    Grid.Row="0"
+                    Header="Settings">
+
+                    <Grid Margin="10 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+                            Grid.Column="0"
+                            Content="Themes"/>
+                        <ComboBox
+                            Grid.Column="1"
+                            Margin="5 0 0 0"
+                            ItemsSource="{Binding Themes}"
+                            SelectedItem="{Binding SelectedTheme}"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>

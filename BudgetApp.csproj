@@ -19,4 +19,47 @@
       <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="Features\CreditCards\Views\CreditCardsView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Features\Incomes\Views\IncomesView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Features\Loans\Views\LoansView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Features\People\Views\PeopleView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Resources\Styles\GroupBoxStyles.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Core\Views\MainWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Banks\Stores\" />
+      <Folder Include="Features\Banks\ViewModels\" />
+      <Folder Include="Features\Banks\Views\" />
+      <Folder Include="Features\Loans\Stores\" />
+      <Folder Include="Features\Subscriptions\Stores\" />
+      <Folder Include="Features\Subscriptions\ViewModels\" />
+      <Folder Include="Features\Subscriptions\Views\" />
+    </ItemGroup>
+
 </Project>

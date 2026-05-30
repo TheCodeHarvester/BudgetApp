@@ -1,0 +1,14 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="DockPanel">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+    </Style>
+
+    <Style TargetType="DockPanel" x:Key="NavigationPanel">
+        <Setter Property="Background" Value="{DynamicResource SecondaryBrushOpacity30}"/>
+    </Style>
+
+    <Style TargetType="DockPanel" x:Key="UserControlWrapper">
+        <Setter Property="Background" Value="{DynamicResource SecondaryBrushOpacity20}"/>
+    </Style>
+</ResourceDictionary>

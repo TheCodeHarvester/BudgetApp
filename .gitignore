@@ -1,0 +1,7 @@
+# IDE folders
+.idea/
+.vs/
+
+# Build output folders
+**/bin/
+**/obj/

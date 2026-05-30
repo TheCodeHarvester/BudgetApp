@@ -1,0 +1,107 @@
+<UserControl x:Class="BudgetApp.Views.PeopleView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:custom="clr-namespace:BudgetApp.Core.CustomControls"
+        mc:Ignorable="d"
+        Background="{DynamicResource PrimaryBrush}">
+    <DockPanel Style="{DynamicResource UserControlWrapper}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- People List Section -->
+            <Grid Grid.Column="0"
+                  Margin="0 0 20 50">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <GroupBox
+                    Grid.Row="0"
+                    Header="People">
+                    <DataGrid
+                        IsReadOnly="True"
+                        SelectionMode="Single"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        HeadersVisibility="Column"
+                        ItemsSource="{Binding People}"
+                        SelectedItem="{Binding SelectedPerson, Mode=TwoWay}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Header="First Name"
+                                Width="*"
+                                Binding="{Binding FirstName}"
+                                ElementStyle="{DynamicResource CenteredDataGridCell}"/>
+                            <DataGridTextColumn
+                                Header="Last Name"
+                                Width="*"
+                                Binding="{Binding LastName}"
+                                ElementStyle="{DynamicResource CenteredDataGridCell}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+                <custom:AddRemoveControl
+                    Grid.Row="1"
+                    AddCommand="{Binding AddPersonCommand}"
+                    RemoveCommand="{Binding RemovePersonCommand}"/>
+            </Grid>
+
+            <!-- Selected Person Section -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <GroupBox
+                    Grid.Row="0"
+                    Header="Selected Person">
+
+                    <Grid Margin="10 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Content="First Name"/>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Last Name"
+                            Margin="0 10 0 0"/>
+
+                        <TextBox 
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            MaxLength="20"
+                            Text="{Binding SelectedPerson.FirstName,
+                            TargetNullValue='',
+                            UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            MaxLength="20"
+                            Margin="0 10 0 0"
+                            Text="{Binding SelectedPerson.LastName,
+                            TargetNullValue='', 
+                            UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>

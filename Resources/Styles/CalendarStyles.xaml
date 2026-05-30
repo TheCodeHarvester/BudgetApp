@@ -1,0 +1,267 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Key="CalendarButtonStyle" TargetType="{x:Type CalendarButton}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+         <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CalendarButton}">
+                    <Grid>
+                        <Border x:Name="Border"
+                                CornerRadius="5"
+                                Background="Transparent"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"/>
+                        <ContentPresenter x:Name="NormalText"
+                                          Margin="5"
+                                          TextElement.Foreground="{DynamicResource TextBrush}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- MouseOver -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource AccentBrushOpacity50}"/>
+                        </Trigger>
+                        <!-- Pressed -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                        <!-- Inactive Month Days -->
+                        <Trigger Property="IsInactive" Value="True">
+                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource TextBrushOpacity50}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="CalendarDayButtonStyle" TargetType="{x:Type CalendarDayButton}">
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CalendarDayButton}">
+                    <Grid>
+                        <Border x:Name="Border"
+                                CornerRadius="5"
+                                Background="Transparent"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"/>
+                        <ContentPresenter x:Name="NormalText"
+                                          Margin="5"
+                                          TextElement.Foreground="{DynamicResource TextBrush}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- MouseOver -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource AccentBrushOpacity50}"/>
+                        </Trigger>
+                        <!-- Pressed -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                        <!-- Selected -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                        <!-- Inactive Month Days -->
+                        <Trigger Property="IsInactive" Value="True">
+                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource TextBrushOpacity50}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="CalendarItemTemplate" TargetType="{x:Type CalendarItem}">
+        <ControlTemplate.Resources>
+            <DataTemplate x:Key="{x:Static CalendarItem.DayTitleTemplateResourceKey}">
+                <TextBlock
+                    FontSize="14"
+                    Width="30"
+                    TextAlignment="Center"
+                    Background="Transparent"
+                    Text="{Binding}"
+                    Foreground="{DynamicResource TextBrush}"/>
+            </DataTemplate>
+        </ControlTemplate.Resources>
+        <Grid x:Name="PART_Root">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal"/>
+                    <VisualState x:Name="Disabled">
+                        <Storyboard>
+                            <DoubleAnimation
+                                Duration="0" To="1"
+                                Storyboard.TargetProperty="Opacity"
+                                Storyboard.TargetName="PART_DisabledVisual"/>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Border
+                CornerRadius="5"
+                BorderThickness="0.5"
+                Background="{DynamicResource PrimaryBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}">
+                <Border
+                    CornerRadius="5"
+                    Background="{DynamicResource SecondaryBrushOpacity20}"
+                    BorderBrush="{DynamicResource PrimaryBrush}">
+                    <Grid Margin="0 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="PART_HeaderButton" 
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="5 0 5 5"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource CalendarHeaderButton}"/>
+                        <Grid
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Margin="0 0 5 5">
+                            <Button x:Name="PART_PreviousButton"
+                                    Width="25"
+                                    Margin="0 0 3 0"
+                                    HorizontalAlignment="Left"
+                                    Style="{DynamicResource LeftArrowButton}"/>
+                            <Button x:Name="PART_NextButton"
+                                    Width="25"
+                                    HorizontalAlignment="Right" 
+                                    Style="{StaticResource RightArrowButton}"/>
+                        </Grid>
+                        <Grid x:Name="PART_MonthView" 
+                              Grid.Row="1"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="3"
+                              Visibility="Visible"
+                              HorizontalAlignment="Center"
+                              Margin="6,-1,6,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                        </Grid>
+                        <Grid x:Name="PART_YearView"
+                              Grid.Row="1"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="3"
+                              Visibility="Hidden"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Margin="6,-1,6,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Border>
+            <Rectangle x:Name="PART_DisabledVisual"
+                       Opacity="0"
+                       RadiusX="2"
+                       RadiusY="2"
+                       Stretch="Fill"
+                       StrokeThickness="1"
+                       Visibility="Collapsed"
+                       Fill="{DynamicResource AccentBrush}"
+                       Stroke="{DynamicResource TextBrushOpacity30}"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Visibility"
+                        TargetName="PART_DisabledVisual"
+                        Value="Visible"/>
+            </Trigger>
+            <DataTrigger
+                Binding="{Binding DisplayMode, 
+                RelativeSource={RelativeSource FindAncestor, 
+                AncestorType={x:Type Calendar}}}" 
+                Value="Year">
+                <Setter Property="Visibility" 
+                        TargetName="PART_MonthView" 
+                        Value="Hidden"/>
+                <Setter Property="Visibility" 
+                        TargetName="PART_YearView" 
+                        Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger 
+                Binding="{Binding DisplayMode, 
+                RelativeSource={RelativeSource FindAncestor, 
+                AncestorType={x:Type Calendar}}}" 
+                Value="Decade">
+                <Setter Property="Visibility" 
+                        TargetName="PART_MonthView" 
+                        Value="Hidden"/>
+                <Setter Property="Visibility" 
+                        TargetName="PART_YearView" 
+                        Value="Visible"/>
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <Style x:Key="ModernCalendar" TargetType="Calendar">
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="CalendarButtonStyle" Value="{DynamicResource CalendarButtonStyle}"/>
+        <Setter Property="CalendarDayButtonStyle" Value="{DynamicResource CalendarDayButtonStyle}"/>
+        <Setter Property="BorderThickness" Value="0.5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Calendar}">
+                    <StackPanel x:Name="PART_Root" HorizontalAlignment="Center">
+                        <CalendarItem
+                            x:Name="PART_CalendarItem"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Template="{DynamicResource CalendarItemTemplate}"
+                            Style="{TemplateBinding CalendarItemStyle}"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
